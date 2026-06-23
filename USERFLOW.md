@@ -1,97 +1,85 @@
-# User Flow Documentation
+# User Flow System
 
-## Role Hierarchy
-
-Super Admin
-├── creates admins
-├── creates judges
-├── creates maintainers
-└── creates events
-
-Admin / Manager
-├── configures event
-├── defines rubrics
-├── assigns judges
-├── manages teams
-└── locks event into judging phase
-
-Judge
-├── receives assigned submissions
-├── evaluates sequential criteria
-├── submits immutable scores
-└── completes evaluation workflow
-
-Maintainer
-└── operates only in maintenance instance
-    ├── system logs
-    ├── infrastructure tools
-    └── test environment setup
+## Super Admin Flow
+- Create users (Admin/Judge/Maintainer)
+- Approve events
+- Create/edit registration forms (within edit window)
+- Extend deadlines (audit logged)
+- Control judge permissions
+- Void evaluations / trigger re-evaluation
+- Release results visibility
+- Export full audit Excel
 
 ---
 
-## Admin Workflow
-
-1. Create event
-2. Define criteria & tie-break rubric
-3. Register teams/submissions
-4. Assign judges
-5. Lock event
-6. Start judging
-7. Monitor progress
-8. Request judge lifecycle changes (via SA)
-9. Wait for auto-finalization
+## Admin Flow
+- Create event draft
+- Request SA approval
+- Manage teams and judges
+- View registration submissions
+- Download Excel data
+- Lock event into judging phase
 
 ---
 
-## Judge Workflow
+## Judge Flow
+- Login via Google
+- Auto account creation
+- Await admin approval
+- View assigned projects (all projects)
+- See only:
+  - project title
+  - abstract
+- Sequential scoring per criterion
+- Submit → lock score permanently
+- Cannot edit after submission
+- View results only if SA enables
 
-1. Login
-2. View assigned projects (anonymized)
-3. Open evaluation
+---
+
+## Maintainer Flow
+- System maintenance mode only
+- No access to scoring or evaluation data
+- Technical logs and infrastructure checks only
+
+---
+
+## Team Registration Flow
+
+1. Open public link
+2. Create draft
+3. Edit draft via:
+   - email recovery OR
+   - draft ID
+4. Final submit
+5. Locked submission
+
+---
+
+## Judging Flow
+
+1. Admin activates judging phase
+2. Judges log in
+3. View all projects (anonymized)
 4. Sequential scoring:
-   - Criterion 1 → submit → lock
-   - Criterion 2 → submit → lock
-   - ...
-5. Resume allowed if interrupted
-6. Complete all criteria for validity
+   - criterion input → submit → lock
+5. Repeat for all projects
+6. System aggregates scores
 
 ---
 
-## Scoring Flow
+## Result Flow
 
-Open project
-→ sequential criteria input
-→ immediate lock per criterion
-→ immutable submission
-→ stored in scoring ledger
-
----
-
-## Inactivity Flow
-
-No evaluation activity for X time
-→ system flags judge inactive
-→ admin requests SA action
-→ SA may deactivate judge
-→ judge excluded from final calculation
+1. Event ends
+2. System calculates rankings
+3. Results remain hidden
+4. SA enables visibility
+5. Judges/Admin see results based on configured mode
 
 ---
 
-## Ranking Flow
+## Audit Flow
 
-1. Judge submissions processed in real time
-2. Aggregated scores computed
-3. Tie detected
-4. Tie-break rubric executed
-5. Snapshot leaderboard published
-
----
-
-## Event Finalization Flow
-
-All conditions met:
-- All active judges complete evaluations
-- Tie-break resolved
-→ system auto-finalizes event
-→ leaderboard locked
-→ reports generated
+- All actions logged
+- SA can export full dataset in Excel
+- Used for transparency and verification

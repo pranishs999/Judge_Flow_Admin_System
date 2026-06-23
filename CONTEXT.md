@@ -1,91 +1,63 @@
 # Project Judging & Event Evaluation Platform
 
 ## Overview
-A self-hosted, open-source judging system designed for structured evaluation of projects in controlled event environments. It supports sequential judging, immutable scoring, multi-round evaluation, tie-break handling, and strict role-based governance.
+A self-hosted event evaluation system designed for structured judging of team-based projects. It ensures fair scoring, strict role control, immutable evaluation records, and controlled result visibility.
 
-The system is deployed per organization as an isolated instance with tightly controlled event lifecycle rules and no post-submission score mutation.
+The system supports:
+- Google-based authentication
+- public registration forms
+- sequential judging workflow
+- full audit export for transparency
 
 ---
 
 ## Vision
-To ensure fair, deterministic, and auditable evaluation of projects through a strictly controlled scoring pipeline that eliminates post-submission manipulation and enforces structured judging workflows.
+To build a controlled, auditable, and fair evaluation system for academic events, hackathons, and competitions where scoring integrity and role separation are strictly enforced.
 
 ---
 
-## Scope
-### Included
-- Event lifecycle management
-- Team and submission handling
-- Multi-round judging system
-- Sequential criterion-based scoring
-- Immutable scoring ledger
-- Real-time internal ranking engine
-- Snapshot-based public leaderboard
-- Tie-break rubric system
-- Offline/queued submissions
-- Audit logging
-
-### Excluded
-- Cross-organization SaaS tenancy
-- Post-submission score edits
-- Public participation systems
-- Flexible ad-hoc scoring updates
+## Core Principles
+- Immutable scoring (no post-submit edits)
+- Role-based access control (RBAC)
+- Event-driven lifecycle phases
+- Full audit transparency for Super Admin
+- Controlled result visibility
+- Simple monolithic architecture
 
 ---
 
-## Stakeholders
+## Roles
 
 ### Super Admin
-- Creates events, users, roles
 - Full system control
-- Cannot modify submitted scores
+- Can grant/revoke any access
+- Can void evaluations and trigger re-evaluation
+- Can extend deadlines (audit logged)
+- Controls result visibility release
 
-### Admin / Manager
-- Event configuration authority
-- Manages teams, judges, rubrics (pre-start)
-- Post-start: request-only control for judge lifecycle changes
+### Admin
+- Creates and manages events (requires SA approval)
+- Manages teams and judges (pre-event)
+- Views registration data (Excel export)
+- Cannot modify scores
 
 ### Judge
-- Evaluates submissions
-- Sequential scoring per criterion
-- Immutable submissions
+- Evaluates all projects
+- Sees only title + abstract
+- Sequential scoring per criteria
+- One-time submission per criterion
 
 ### Maintainer
-- Technical operations role
-- Works only in isolated maintenance instance
-- No access to scoring or marks data
+- System maintenance mode only
+- No access to scoring or judging data
 
 ---
 
 ## Constraints
-- One submission per team per event
-- Sequential criterion-based scoring
-- Immutable score entries (append-only model)
-- No score updates or deletions
-- Event-driven lifecycle locking
-- Judge inactivity monitoring
-- Auto-finalization on completion
-- Hybrid ranking system (real-time + snapshot)
-
----
-
-## Key Terminology
-- **Criterion**: Individual scoring parameter
-- **Submission**: Project entry
-- **Evaluation**: Judge scoring process
-- **Round**: Stage of judging
-- **Tie-break Rubric**: Secondary scoring mechanism for resolving ties
-- **Snapshot Ranking**: Frozen leaderboard state
-- **Active Judge**: Judge participating in evaluation
-- **Inactive Judge**: Judge excluded due to inactivity
-
----
-
-## Business Rules
-- All scores are immutable once submitted
-- Judges must complete all criteria for valid evaluation
-- Only evaluation actions reset inactivity timer
-- Admin cannot modify scoring outcomes
-- Super Admin cannot modify scores
-- Event auto-finalizes only when all conditions are met
-- Tie-break uses separate rubric evaluated by same judges
+- One team = one project per event
+- All judges evaluate all projects
+- No score editing after submission
+- Registration is public (no login required)
+- Draft + final submission model for registration
+- Form editable only within 1–2 days after publish
+- Results hidden until SA explicitly releases them

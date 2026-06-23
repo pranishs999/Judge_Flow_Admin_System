@@ -1,118 +1,98 @@
-# System Architecture Plan
+# System Plan (Phase-Based Architecture)
 
 ## Architecture Style
-Modular monolithic or service-oriented architecture with strict domain separation.
+Modular monolith with clear separation of concerns.
+
+Frontend: Next.js  
+Backend: Single API service (Node.js or FastAPI)  
+Database: PostgreSQL (Supabase recommended)  
+Auth: Google OAuth via Supabase
 
 ---
 
-## Core Modules
-
-### 1. Authentication & RBAC
-- Role management
-- Session control
-- Permission enforcement
-
-### 2. Event Management
-- Event creation
-- Configuration
-- Lifecycle transitions
-
-### 3. Submission Management
-- Team/project uploads
-- QR-based identification
-- Submission locking
-
-### 4. Judging Engine
-- Sequential criterion evaluation
-- Per-criterion immutable scoring
-- Resume support
-
-### 5. Scoring Ledger (Immutable)
-- Append-only storage
-- No updates/deletes allowed
-- Event-sourced scoring model
-
-### 6. Ranking Engine
-- Real-time internal computation
-- Snapshot-based public leaderboard
-
-### 7. Tie-Break Engine
-- Executes dedicated tie-break rubric
-- Uses same judge set
-- Secondary ranking key
-
-### 8. Notification System
-- In-app notifications only
-- Event-driven alerts
-
-### 9. Audit System
-- Full action logging
-- Immutable event history
-
-### 10. Maintenance Mode System
-- Isolated environment
-- No production data access
-- Technical operations only
-
----
-
-## Data Model Principles
-- Append-only scoring system
-- Immutable evaluation records
-- Event-based partitioning
-- Snapshot-based leaderboard versioning
-
----
-
-## RBAC Model
+## PHASE 1: Event & Form Setup
 
 ### Super Admin
-- Full system control (except score mutation)
+- Creates system users (Admin, Judges, Maintainers)
+- Approves events created by Admin
+- Creates registration forms (Google Form-like builder)
+- Sets registration deadline
 
 ### Admin
-- Event configuration authority
-- Post-start request-only judge lifecycle control
+- Creates event drafts
+- Requests SA approval
 
-### Judge
-- Sequential scoring interface
-- One-time per criterion submission
-
-### Maintainer
-- Maintenance instance only
-- No scoring access
+### System Rules
+- Form editable only within 1–2 days of publish
+- After lock, only SA can extend deadline (audit logged)
 
 ---
 
-## Judging Flow
+## PHASE 2: Registration Phase
 
-1. Project assignment
-2. Anonymous evaluation access
-3. Sequential criteria scoring
-4. Immediate lock per criterion
-5. Completion validation
+### Teams
+- Access public registration link
+- Create draft submission
+- Edit using email recovery or draft ID
+- Final submit locks entry
 
----
-
-## Ranking Flow
-
-- Internal real-time aggregation
-- Tie detection triggers tie-break rubric
-- Snapshot published on admin request
+### Admin
+- Views registrations
+- Downloads Excel
 
 ---
 
-## Inactivity System
+## PHASE 3: Judge Onboarding
 
-- Event-configurable threshold
-- Activity = evaluation actions only
-- Auto flag inactive judges
-- Admin escalates to Super Admin
+### Judges
+- Login via Google OAuth
+- Auto account creation on first login
+- Requires Admin approval to activate
 
 ---
 
-## Event Finalization
+## PHASE 4: Judging Phase
 
-Event auto-finalizes when:
-- All active judges complete evaluations
-- All tie-breaks resolved
-- No pending evaluation state exists
+### Flow
+- Admin locks event into judging phase
+- Judges evaluate ALL projects
+- Only title + abstract visible
+- Sequential scoring per criterion
+- Scores become immutable after submission
+
+---
+
+## PHASE 5: Evaluation Integrity
+
+- No score modification allowed
+- SA can void evaluation and trigger re-evaluation
+- Soft revoke of judge access applies after session completion
+
+---
+
+## PHASE 6: Result Processing
+
+- System aggregates scores
+- Rankings computed per event
+- Tie-break rules applied if needed
+
+---
+
+## PHASE 7: Result Release (Controlled)
+
+- Results remain hidden by default
+- SA enables visibility per event
+- Visibility modes:
+  - ranking only
+  - self score only
+  - full leaderboard
+
+---
+
+## PHASE 8: Audit & Export
+
+- SA can export full Excel:
+  - all scores
+  - judge-wise breakdown
+  - event metadata
+- Used for transparency and physical records
