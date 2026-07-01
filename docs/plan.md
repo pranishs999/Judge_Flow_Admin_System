@@ -2,6 +2,7 @@
 
 ## Architecture Style
 Modular monolith with clear separation of concerns.
+RAG MODEL
 
 Frontend: Next.js  
 Backend: Single API service (Node.js or FastAPI)  
