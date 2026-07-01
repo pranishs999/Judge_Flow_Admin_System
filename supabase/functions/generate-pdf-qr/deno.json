@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "pdfkit": "https://esm.sh/pdfkit@0.13.0",
+    "qrcode": "https://esm.sh/qrcode@1.5.1"
+  }
+}
