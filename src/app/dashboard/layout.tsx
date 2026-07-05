@@ -23,11 +23,22 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-background">
       <DashboardSidebar />
-      <main className="flex-1 overflow-auto bg-background">
-        {children}
-      </main>
+      <div className="flex min-h-screen flex-1 flex-col">
+        <header className="border-b border-border/60 bg-card/60 backdrop-blur">
+          <div className="flex items-center justify-between px-6 py-4 lg:px-8">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-[0.24em] text-primary">Operations Center</p>
+              <h2 className="text-lg font-semibold text-foreground">Event and judging oversight</h2>
+            </div>
+            <div className="rounded-full border border-border/70 bg-background/70 px-3 py-1 text-sm text-muted-foreground">
+              {role === "SUPER_ADMIN" ? "Super Admin" : "Admin"}
+            </div>
+          </div>
+        </header>
+        <main className="flex-1 overflow-auto p-6 lg:p-8">{children}</main>
+      </div>
     </div>
   );
 }
